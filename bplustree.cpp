@@ -409,7 +409,7 @@ int main()
         cin>>op;
         switch(op)
            {
-            case 1: cout<<"\nEnter a data : ";
+            case 1: cout<<"\nEnter Roll Number: ";
                     cin >> x;
                     cout<<"enter the name: ";
                     cin>>ch;
