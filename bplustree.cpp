@@ -117,10 +117,7 @@ void node::displayval()
          T->father=father;
          myrecord.key=T->data[0].key;
          myrecord.next=T;
-         //Delete the first key from node T
-         //for(i=1;i<T->noofkeys;i++)
-         //   T->data[i-1]=T->data[i];
-         //T->noofkeys--;
+         
         }
    return(myrecord);
  }
@@ -131,7 +128,6 @@ void node::displayval()
     record myrecord;
     int i,j,centre;
     centre=(noofkeys-2)/2;
- // cout<<"\ncentre= "<<centre;
     T=new node;
     if(x.key>data[centre].key)  //Divide the node in two parts(original and T)
         {
@@ -408,7 +404,7 @@ int main()
       bplus b(n);
       do
     {
-        //cout<<"\n\n1)Insert\n2)Search\n\n4)Print\n5)Quit";
+        cout<<"\n\n1)Insert\n2)Search\n\n4)Print\n5)Quit";
         cout<<"\nEnter your choice : ";
         cin>>op;
         switch(op)
