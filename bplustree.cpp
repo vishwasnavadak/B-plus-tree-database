@@ -102,10 +102,7 @@ void node::displayval()
          T->father=father;
          myrecord.key=T->data[0].key;
          myrecord.next=T;
-         //Delete the first key from node T
-         //for(i=1;i<T->noofkeys;i++)
-        //  T->data[i-1]=T->data[i];
-        // T->noofkeys--;
+        
         }
      else
         {
