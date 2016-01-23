@@ -4,5 +4,5 @@ A simple In-memory B+ Tree database with two fields, one being the roll number w
 
 ## Execution
 
-Just compile bplus.cpp using any of the compiler like gcc and generate the executable file. Run the executable file in command line.
+Just compile bplustree.cpp using any of the compiler like gcc and generate the executable file. Run the executable file in command line.
 
