@@ -5,7 +5,6 @@ Supported Operations:
 2. Deletion of records.
 3. Searching for the name given the roll number.
 4. Display all records present in the database.
-
 */
 #define MAX 5
 #include <iostream>
