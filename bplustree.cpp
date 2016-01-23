@@ -117,7 +117,7 @@ void node::displayval()
          T->father=father;
          myrecord.key=T->data[0].key;
          myrecord.next=T;
-         
+
         }
    return(myrecord);
  }
@@ -417,7 +417,7 @@ int main()
                     cout<<"\nTree after insertion : ";
                     b.displaytree();
                     break;
-            case 2: cout<<"\nEnter a data : ";
+            case 2: cout<<"\nEnter Roll Number : ";
                     cin>>x;
                     if(!b.search(x))
                     cout<<" Students Roll number not found!";
