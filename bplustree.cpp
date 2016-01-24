@@ -395,9 +395,11 @@ void bplus::insert(int x,char ch[256])
 }
 int main(int argc, char **argv)
 {
-    int n=3,x,op;
+    int n,x,op;
     char ch[256];
     ifstream input;
+    cout<<"Enter number of values per node: "<<endl;
+    cin>>n;
     bplus b(n);
     if(argc>1){
         if(strcmp(argv[1],"-i")==0 && argc==4){
