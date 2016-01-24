@@ -1,6 +1,6 @@
 ## Description
 
-A simple In-memory B+ Tree database with two fields, one being the roll number which is indexed and other being the student name which is not indexed. Once completed it will support operations like Insertion, Deletion, Searching.
+A simple In-memory B+ Tree database with two fields, one being the roll number which is indexed and other being the student name which is not indexed. Once completed it will support operations like Insertion, Deletion, Searching, Display.
 
 ## Compiling
 
@@ -27,6 +27,7 @@ You can even perform insertion and other operations after running the executable
 Run Time Options:
 1)Insert
 2)Search
+3)Delete
 4)Print
 5)Quit
 Enter your choice :
