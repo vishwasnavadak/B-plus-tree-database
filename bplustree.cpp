@@ -2,8 +2,8 @@
 A simple In-memory B+ Tree database with two fields, one being the roll number which is indexed and other being the student name which is not indexed.
 Supported Operations:
 1. Insertion of new student record(Roll Number and Name).
-2. Deletion of records.
-3. Searching for the name given the roll number.
+2. Searching for the name given the roll number.
+3. Deletion of records.
 4. Display all records present in the database.
 */
 #define MAX 5
@@ -130,6 +130,7 @@ record node::splitaparent(record x)
     T=new node;
     if(x.key>data[centre].key)  //Divide the node in two parts(original and T)
     {
+
         for(i=centre+1,j=0;i<=noofkeys;i++,j++)
         T->data[j]=data[i];
         T->noofkeys=noofkeys-centre-1;
@@ -143,6 +144,12 @@ record node::splitaparent(record x)
         for(i=1;i<T->noofkeys;i++)
         T->data[i-1]=T->data[i];
         T->noofkeys--;
+
+        // setting the father
+        for(i=0;i<T->noofkeys;i++)
+        {
+            T->data[i].next->father=T;
+        }
     }
     else
     {
@@ -158,6 +165,12 @@ record node::splitaparent(record x)
         for(i=1;i<T->noofkeys;i++)
         T->data[i-1]=T->data[i];
         T->noofkeys--;
+
+         // setting the father
+        for(i=0;i<T->noofkeys;i++)
+        {
+            T->data[i].next->father=T;
+        }
     }
     return(myrecord);
 }
@@ -356,6 +369,7 @@ void bplus::insert(int x,char ch[256])
             myrecord=p->splitanode(myrecord);
             else
             myrecord=p->splitaparent(myrecord);
+
             while(1)
             {
                 if(p==root)
@@ -373,7 +387,8 @@ void bplus::insert(int x,char ch[256])
                 }
                 else
                 {
-                    p=p->father;
+                   p=p->father;
+
                     if(p->noofkeys < mkeys)
                     {
                         p->insertinanode(myrecord);
@@ -432,8 +447,8 @@ int main(int argc, char **argv)
     do {
         cin.clear();
         cin.ignore();
-        cout<<endl<<"Run Time Options: "<<endl;
-        cout<<"1)Insert\n2)Search\n4)Print\n5)Quit";
+        //cout<<endl<<"Run Time Options: "<<endl;
+        //cout<<"1)Insert\n2)Search\n3)Delete\n4)Print\n5)Quit";
         cout<<"\nEnter your choice : ";
         cin>>op;
         if(cin.fail()){
