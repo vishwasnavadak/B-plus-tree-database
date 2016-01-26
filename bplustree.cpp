@@ -426,14 +426,25 @@ int main(int argc, char **argv)
     }
 
     do {
+        cin.clear();
+        cin.ignore();
         cout<<endl<<"Run Time Options: "<<endl;
         cout<<"1)Insert\n2)Search\n4)Print\n5)Quit";
         cout<<"\nEnter your choice : ";
         cin>>op;
+        if(cin.fail()){
+            cout<<"Invalid Input"<<endl;
+            continue;
+        }
+
         switch(op)
         {
             case 1: cout<<"\nEnter Roll Number: ";
             cin >> x;
+            if(cin.fail()){
+                cout<<"Invalid Input"<<endl;
+                continue;
+            }
             cout<<"enter the name: ";
             cin>>ch;
             b.insert(x,ch);
@@ -442,6 +453,10 @@ int main(int argc, char **argv)
             break;
             case 2: cout<<"\nEnter Roll Number : ";
             cin>>x;
+            if(cin.fail()){
+                cout<<"Invalid Input"<<endl;
+                continue;
+            }
             if(!b.search(x))
             cout<<" Students Roll number not found!";
             break;
