@@ -1,54 +1,71 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="B-plus-tree-database : ">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <title>B-plus-tree-database</title>
+    <title>B-plus-tree-database by vishwasnavadak</title>
   </head>
 
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/vishwasnavadak/B-plus-tree-database">View on GitHub</a>
+    <header>
+      <div class="container">
+        <h1>B-plus-tree-database</h1>
+        <h2></h2>
 
-          <h1 id="project_title">B-plus-tree-database</h1>
-          <h2 id="project_tagline"></h2>
+        <section id="downloads">
+          <a href="https://github.com/vishwasnavadak/B-plus-tree-database/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/vishwasnavadak/B-plus-tree-database/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/vishwasnavadak/B-plus-tree-database" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/vishwasnavadak/B-plus-tree-database/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/vishwasnavadak/B-plus-tree-database/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+    <div class="container">
+      <section id="main_content">
         <h2>
 <a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h2>
 
-<p>A simple In-memory B+ Tree database with two fields, one being the roll number which is indexed and other being the student name which is not indexed. Once completed it will support operations like Insertion, Deletion, Searching.</p>
+<p>A simple In-memory B+ Tree database with two fields, one being the roll number which is indexed and other being the student name which is not indexed. Once completed it will support operations like Insertion, Deletion, Searching, Display.</p>
 
 <h2>
-<a id="execution" class="anchor" href="#execution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Execution</h2>
+<a id="compiling" class="anchor" href="#compiling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compiling</h2>
 
-<p>Just compile bplustree.cpp using any of the compiler like gcc and generate the executable file. Run the executable file in command line.</p>
+<p>you can compile the bplustree.cpp using any of the IDE or command line compilers. To compile in MinGW(in Windows) use following command.</p>
+
+<pre><code>g++ bplustee.cpp -o bplustree.exe
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Once the executable is generated, insertion can be done by passing a roll number and student name as parameters or by specifying a file name which contains multiple records. List of options can be generate using following command,</p>
+
+<pre><code>&gt; bplustree -h
+Command Line Options
+-i &lt;roll_number&gt; &lt;name&gt; : for inserting one record through command line
+-if &lt;filename&gt;.txt      : for inserting records from the data present in file
+-h                      : for displaying this help text
+</code></pre>
+
+<p>You can even perform insertion and other operations after running the executable file and selecting the options from menu.</p>
+
+<pre><code>&gt; bplustree.exe
+
+Run Time Options:
+1)Insert
+2)Search
+3)Delete
+4)Print
+5)Quit
+Enter your choice :
+</code></pre>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">B-plus-tree-database maintained by <a href="https://github.com/vishwasnavadak">vishwasnavadak</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
     </div>
 
               <script type="text/javascript">
@@ -61,7 +78,6 @@
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
-
 
   </body>
 </html>
