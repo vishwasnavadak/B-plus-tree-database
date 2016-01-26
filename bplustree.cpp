@@ -6,7 +6,7 @@ Supported Operations:
 3. Deletion of records.
 4. Display all records present in the database.
 */
-#define MAX 1000
+#define MAX 10
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
