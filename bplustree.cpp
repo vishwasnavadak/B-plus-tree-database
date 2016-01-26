@@ -400,6 +400,10 @@ int main(int argc, char **argv)
     ifstream input;
     cout<<"Enter number of values per node: "<<endl;
     cin>>n;
+    if(cin.fail()){
+        cout<<"Invalid Input"<<endl;
+        return 0;
+    }
     bplus b(n);
     if(argc>1){
         if(strcmp(argv[1],"-i")==0 && argc==4){
