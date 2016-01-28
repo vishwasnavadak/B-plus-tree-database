@@ -16,6 +16,7 @@ using namespace std;
 
 class node;
 node *pos;
+
 /* Record Class will define variables to store roll number and name of each of the student. */
 struct record
 {
