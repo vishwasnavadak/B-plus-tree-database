@@ -6,7 +6,7 @@ Supported Operations:
 3. Deletion of records.
 4. Display all records present in the database.
 */
-#define MAX 10
+#define MAX 20
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
@@ -15,6 +15,7 @@ Supported Operations:
 using namespace std;
 
 class node;
+node *pos;
 /* Record Class will define variables to store roll number and name of each of the student. */
 struct record
 {
@@ -292,17 +293,21 @@ bool bplus::search(int x)
 
             present=q1.deque();
             if(present->isleaf){
-                for(i=0;i<present->noofkeys;i++)
-                if(present->data[i].key==x && present->next!=NULL)
+
+                for(i=0;i<present->noofkeys;i++){
+                if(present->data[i].key==x )
                 {
                     cout<<"\n Student Details: ";
                     cout<<"\n Roll number: "<<present->data[i].key<<"\n Name: "<<present->data[i].name<<endl;
+                    pos=present;
                     return true ;
                 }
+                }
+
             }
             if(!present->isleaf)
             {
-                q2.enque(present->first);
+                q2.enque(present->data[0].left);
                 for(int i=0;i<present->noofkeys;i++)
                 q2.enque(present->data[i].right);
 
@@ -358,7 +363,7 @@ void bplus::displaytreeval()
             }
             if(!present->isleaf)
             {
-                q2.enque(present->first);
+                q2.enque(present->data[0].left);
                 for(int i=0;i<present->noofkeys;i++)
                 q2.enque(present->data[i].right);
 
@@ -456,10 +461,111 @@ void bplus::insert(int x,char ch[256])
     }
 }
 
-/*void bplus::Delete(int x)
+void bplus::Delete(int x)
 {
+      node *lef,*rig;
+      record *centre;
+      node *q;
+      int i,j,centreindex;
+      if(search(x));
+      for(i=0;pos->data[i].key != x; i++)
+      ;
+      // if p is not a leaf node then locate its successor  in a leaf node,
+      // replace x with its successor/predecessor and delete it.
+      if(!pos->isleaf)
+    {
+      q=pos->data[i].right;
+      while(!q->isleaf)
+           q=q->data[0].left;
+      pos->data[i].key=q->data[0].key;
+      pos=q;                //pos points to leaf node
+      x=q->data[0].key;
+      i=0;
+    }
+//      if(pos->isleaf) ,pos will always be a leaf node
 
-}*/
+        pos->data[i].left=NULL;
+        pos->data[i].right=NULL;
+        for(i=i+1;i<pos->noofkeys;i++)
+            pos->data[i-1]=pos->data[i];
+        pos->noofkeys--;
+
+       while(1)
+        {
+        if(pos->noofkeys >= mkeys/2 )
+            return;
+        if(pos==root )
+           {
+               if(pos->noofkeys>0)
+                return;
+              else
+                {
+                 root=pos->data[0].left;
+                 return;
+              }
+           }
+   //       otherwise
+
+            q=pos->father;
+            if(q->data[0].left==pos || q->data[0].right==pos)
+               {
+              lef=q->data[0].left;
+              rig=q->data[0].right;
+              centre=&(q->data[0]);
+              centreindex=0;
+               }
+            else
+               {
+              for(i=1;i<q->noofkeys;i++)
+                if(q->data[i].right==pos)
+                     break;
+              lef=q->data[i-1].right;
+              rig=q->data[i].right;
+              centre=&(q->data[i]);
+              centreindex=i;
+               }
+
+     //case 1 : left has one extra key, move a key from left
+           if(lef->noofkeys > mkeys/2)
+             {
+                  for(i=rig->noofkeys-1;i>=0;i--)
+                     rig->data[i+1]=rig->data[i];
+                  rig->noofkeys ++;
+                  rig->data[0].key=centre->key;
+                  centre->key=lef->data[lef->noofkeys - 1].key;
+                  lef->noofkeys--;
+                  return;
+              }
+     // case 2 : right has one extra key, move a key from right
+            else
+              if(rig->noofkeys >mkeys/2)
+                 {
+                   lef->data[lef->noofkeys].key=centre->key;
+                   lef->noofkeys++;
+                   centre->key=rig->data[0].key;
+                   for(i=1;i<rig->noofkeys;i++)
+                    rig->data[i-1]=rig->data[i];
+                   rig->noofkeys--;
+                   return;
+                 }
+               else
+                {  //merge left and right
+                lef->data[lef->noofkeys].key=centre->key;
+                lef->noofkeys++;
+                for(j=0;j<rig->noofkeys;j++)
+                    lef->data[lef->noofkeys+j]=rig->data[j];
+                lef->noofkeys+=rig->noofkeys;
+                //delete the pair from the parent
+                for(i=centreindex+1;i<q->noofkeys ;i++)
+                    q->data[i-1]=q->data[i];
+                q->noofkeys--;
+                pos=q;//for next iteration
+                 }
+
+
+          }
+
+}
 
 int main(int argc, char **argv)
 {
@@ -532,6 +638,20 @@ int main(int argc, char **argv)
             if(!b.search(x))
             cout<<" Students Record number not found!";
             break;
+            case 3: cout<<"\nEnter a data : ";
+                    cin>>x;
+                    if(cin.fail()){
+                    cout<<"Invalid Input"<<endl;
+                    continue;
+                    }
+                    if(b.checkindex(x)){
+                      b.Delete(x);
+                      b.displaytree();
+                    }
+                    else
+                      cout<<"Students Record number not found!";
+                      break;
+
             case 4: b.displaytree();
             b.displaytreeval();
             break;
