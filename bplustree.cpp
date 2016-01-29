@@ -19,7 +19,7 @@ node *pos,*nonleafpos;
 /* Record Class will define variables to store roll number and name of each of the student. */
 struct record
 {
- public:   node *left;
+    node *left;
     node *right;
     int key;
     char name[256];
