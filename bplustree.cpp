@@ -15,12 +15,11 @@ Supported Operations:
 using namespace std;
 
 class node;
-node *pos;
-
+node *pos,*nonleafpos;
 /* Record Class will define variables to store roll number and name of each of the student. */
 struct record
 {
-    node *left;
+ public:   node *left;
     node *right;
     int key;
     char name[256];
@@ -66,7 +65,7 @@ node::node()
 /*Queue is used to traverse through B+ tree node levels */
 class Q
 {
-    node *data[256];
+    node *data[100000];
     int R,F;
 public:
     Q()
@@ -98,7 +97,7 @@ class bplus
 {
     int mkeys; //maximum number of keys in a node
     node *root;
-    int *keys;
+    int keys[100000];
     int totalnoofkeys;
 public:
     bplus(int n)
@@ -108,10 +107,10 @@ public:
         totalnoofkeys=0;
     }
     void insert(int x,char ch[256]);
-    bool checkindex(int x);
+    bool checkindex(int x,int choice);
     void displaytree();
     void displaytreeval();
-    bool search(int x);
+    bool search(int x,int choice);
     void Delete(int x);
 };
 
@@ -266,20 +265,30 @@ record node::splitaparent(record x)
 
 
 
-bool bplus::checkindex(int x)
+bool bplus::checkindex(int x,int choice)
 {
-
-    for(int i=0;i<=totalnoofkeys;i++)
+if(choice==3){
+    for(int i=0;i<totalnoofkeys;i++)
+    {
+        if(keys[i]==x)
+        return true;
+    }
+}
+   if(choice==1){
+    for(int i=0;i<totalnoofkeys;i++)
     {
         if(keys[i]==x)
         return true;
     }
     keys[totalnoofkeys]=x;
-    totalnoofkeys=totalnoofkeys+1;
+   totalnoofkeys=totalnoofkeys+1;
+   }
+
     return false;
 }
 
-bool bplus::search(int x)
+
+bool bplus::search(int x,int choice)
 {
     Q q1,q2;
     node *present;
@@ -298,8 +307,10 @@ bool bplus::search(int x)
                 for(i=0;i<present->noofkeys;i++){
                 if(present->data[i].key==x )
                 {
+                    if(choice!=3){
                     cout<<"\n Student Details: ";
                     cout<<"\n Roll number: "<<present->data[i].key<<"\n Name: "<<present->data[i].name<<endl;
+                    }
                     pos=present;
                     return true ;
                 }
@@ -309,8 +320,11 @@ bool bplus::search(int x)
             if(!present->isleaf)
             {
                 q2.enque(present->data[0].left);
-                for(int i=0;i<present->noofkeys;i++)
-                q2.enque(present->data[i].right);
+                for(int i=0;i<present->noofkeys;i++){
+                    if(present->data[i].key==x)
+                        nonleafpos=present;
+                    q2.enque(present->data[i].right);
+                }
 
             }
         }
@@ -378,7 +392,7 @@ void bplus::insert(int x,char ch[256])
 {
     record myrecord;
     node *present,*q;
-    if(checkindex(x))
+    if(checkindex(x,1))
     {
         cout<<"Duplicate key entered!Please reenter the students roll number and name\n";
         return;
@@ -462,111 +476,34 @@ void bplus::insert(int x,char ch[256])
     }
 }
 
+
+
 void bplus::Delete(int x)
 {
-      node *lef,*rig;
-      record *centre;
-      node *q;
-      int i,j,centreindex;
-      if(search(x));
-      for(i=0;pos->data[i].key != x; i++)
-      ;
-      // if p is not a leaf node then locate its successor  in a leaf node,
-      // replace x with its successor/predecessor and delete it.
-      if(!pos->isleaf)
-    {
-      q=pos->data[i].right;
-      while(!q->isleaf)
-           q=q->data[0].left;
-      pos->data[i].key=q->data[0].key;
-      pos=q;                //pos points to leaf node
-      x=q->data[0].key;
-      i=0;
-    }
-//      if(pos->isleaf) ,pos will always be a leaf node
+ int i;
+ node *present;
 
-        pos->data[i].left=NULL;
-        pos->data[i].right=NULL;
-        for(i=i+1;i<pos->noofkeys;i++)
-            pos->data[i-1]=pos->data[i];
-        pos->noofkeys--;
+ search(x,3);
 
-       while(1)
-        {
-        if(pos->noofkeys >= mkeys/2 )
-            return;
-        if(pos==root )
-           {
-               if(pos->noofkeys>0)
-                return;
-              else
-                {
-                 root=pos->data[0].left;
-                 return;
-              }
-           }
-   //       otherwise
+present=pos;
+    cout<<present->data[0].key;
 
-            q=pos->father;
-            if(q->data[0].left==pos || q->data[0].right==pos)
-               {
-              lef=q->data[0].left;
-              rig=q->data[0].right;
-              centre=&(q->data[0]);
-              centreindex=0;
-               }
-            else
-               {
-              for(i=1;i<q->noofkeys;i++)
-                if(q->data[i].right==pos)
-                     break;
-              lef=q->data[i-1].right;
-              rig=q->data[i].right;
-              centre=&(q->data[i]);
-              centreindex=i;
-               }
+/*case 1: Removing the key from the leaf*/
+for(i=0;i<present->noofkeys;i++){
+    if(present->data[i].key==x){
+        delete(present->data[i].left);
+        delete(present->data[i].right);
+        present->data[i].key=NULL;
+//        delete(present->data[i]);
 
-     //case 1 : left has one extra key, move a key from left
-           if(lef->noofkeys > mkeys/2)
-             {
-                  for(i=rig->noofkeys-1;i>=0;i--)
-                     rig->data[i+1]=rig->data[i];
-                  rig->noofkeys ++;
-                  rig->data[0].key=centre->key;
-                  centre->key=lef->data[lef->noofkeys - 1].key;
-                  lef->noofkeys--;
-                  return;
-              }
-     // case 2 : right has one extra key, move a key from right
-            else
-              if(rig->noofkeys >mkeys/2)
-                 {
-                   lef->data[lef->noofkeys].key=centre->key;
-                   lef->noofkeys++;
-                   centre->key=rig->data[0].key;
-                   for(i=1;i<rig->noofkeys;i++)
-                    rig->data[i-1]=rig->data[i];
-                   rig->noofkeys--;
-                   return;
-                 }
-               else
-                {  //merge left and right
-                lef->data[lef->noofkeys].key=centre->key;
-                lef->noofkeys++;
-                for(j=0;j<rig->noofkeys;j++)
-                    lef->data[lef->noofkeys+j]=rig->data[j];
-                lef->noofkeys+=rig->noofkeys;
-                //delete the pair from the parent
-                for(i=centreindex+1;i<q->noofkeys ;i++)
-                    q->data[i-1]=q->data[i];
-                q->noofkeys--;
-                pos=q;//for next iteration
-                 }
-
-
-          }
 
 }
+}
+
+
+
+}
+
 
 int main(int argc, char **argv)
 {
@@ -636,21 +573,21 @@ int main(int argc, char **argv)
                 cout<<"Invalid Input"<<endl;
                 continue;
             }
-            if(!b.search(x))
+            if(!b.search(x,2))
             cout<<" Students Record number not found!";
             break;
             case 3: cout<<"\nEnter a data : ";
-                    cin>>x;
-                    if(cin.fail()){
+				    cin>>x;
+				    if(cin.fail()){
                     cout<<"Invalid Input"<<endl;
                     continue;
-                    }
-                    if(b.checkindex(x)){
-                      b.Delete(x);
-                      b.displaytree();
-                    }
-                    else
-                      cout<<"Students Record number not found!";
+				    }
+				    if(b.checkindex(x,3)){
+				      b.Delete(x);
+				      //b.displaytree();
+				    }
+				    else
+					  cout<<"Students Record number not found!";
                       break;
 
             case 4: b.displaytree();
