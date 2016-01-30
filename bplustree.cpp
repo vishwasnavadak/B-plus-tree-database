@@ -50,10 +50,17 @@ public:
 
 node::node()
 {
+<<<<<<< HEAD
     int i;
     for(i=0;i<=MAX;i++){
         data[i].left=NULL;
         data[i].right=NULL;
+=======
+   int i;
+    for(i=0;i<=MAX;i++){
+    data[i].left=NULL;
+    data[i].right=NULL;
+>>>>>>> origin/master
     }
     noofkeys=0;
     father=NULL;
@@ -92,10 +99,17 @@ public:
         R=F=0;
     }
 };
+<<<<<<< HEAD
 /* Bplus class will define the whole tree structure and includes required functionalities, pointers and number of keys present in the tree. */
 class bplus
 {
     int mkeys;
+=======
+
+class bplus
+{
+    int mkeys; //maximum number of keys in a node
+>>>>>>> origin/master
     node *root;
     int keys[100000];
     int totalnoofkeys;
@@ -106,6 +120,7 @@ public:
         root=NULL;
         totalnoofkeys=0;
     }
+<<<<<<< HEAD
     /* Receives roll number and name from main functions and initiates insert operation.*/
     void insert(int x,char ch[256]);
     /* checkindex() function receives entered values from insert function and checks whether entered roll number is already exist in the database.*/
@@ -117,6 +132,13 @@ public:
     /* search function takes roll number and returns boolean values depending on whether it's present or not. If present its corresponding name will be displayed.*/
     bool search(int x,int choice);
     /* Delete() takes roll number from main function and deletes it from the B plus tree.*/
+=======
+    void insert(int x,char ch[256]);
+    bool checkindex(int x,int choice);
+    void displaytree();
+    void displaytreeval();
+    bool search(int x,int choice);
+>>>>>>> origin/master
     void Delete(int x);
 };
 
@@ -142,6 +164,7 @@ node *node::nextindex(int x)
     return(this);
     else{
         for(i=0;i<noofkeys ;i++)
+<<<<<<< HEAD
         {
             if(x <data[i].key)
             return data[i].left;
@@ -151,6 +174,17 @@ node *node::nextindex(int x)
             return data[i].right;
         }
         return data[i-1].right;
+=======
+         {
+             if(x <data[i].key)
+             return data[i].left;
+             else if(x==data[i].key)
+                return data[i].right;
+             else if(x>data[i].key&& x< data[i+1].key)
+                return data[i].right;
+         }
+         return data[i-1].right;
+>>>>>>> origin/master
 
     }
 
@@ -258,7 +292,11 @@ record node::splitaparent(record x)
         T->data[i-1]=T->data[i];
         T->noofkeys--;
 
+<<<<<<< HEAD
         // setting the father
+=======
+         // setting the father
+>>>>>>> origin/master
         for(i=0;i<T->noofkeys;i++)
         {
             T->data[i].right->father=T;
@@ -272,6 +310,7 @@ record node::splitaparent(record x)
 
 bool bplus::checkindex(int x,int choice)
 {
+<<<<<<< HEAD
     if(choice==3){
         for(int i=0;i<totalnoofkeys;i++)
         {
@@ -288,6 +327,24 @@ bool bplus::checkindex(int x,int choice)
         keys[totalnoofkeys]=x;
         totalnoofkeys=totalnoofkeys+1;
     }
+=======
+if(choice==3){
+    for(int i=0;i<totalnoofkeys;i++)
+    {
+        if(keys[i]==x)
+        return true;
+    }
+}
+   if(choice==1){
+    for(int i=0;i<totalnoofkeys;i++)
+    {
+        if(keys[i]==x)
+        return true;
+    }
+    keys[totalnoofkeys]=x;
+   totalnoofkeys=totalnoofkeys+1;
+   }
+>>>>>>> origin/master
 
     return false;
 }
@@ -310,6 +367,7 @@ bool bplus::search(int x,int choice)
             if(present->isleaf){
 
                 for(i=0;i<present->noofkeys;i++){
+<<<<<<< HEAD
                     if(present->data[i].key==x )
                     {
                         if(choice!=3){
@@ -320,6 +378,18 @@ bool bplus::search(int x,int choice)
                         return true ;
                     }
                 }
+=======
+                if(present->data[i].key==x )
+                {
+                    if(choice!=3){
+                    cout<<"\n Student Details: ";
+                    cout<<"\n Roll number: "<<present->data[i].key<<"\n Name: "<<present->data[i].name<<endl;
+                    }
+                    pos=present;
+                    return true ;
+                }
+                }
+>>>>>>> origin/master
 
             }
             if(!present->isleaf)
@@ -327,7 +397,11 @@ bool bplus::search(int x,int choice)
                 q2.enque(present->data[0].left);
                 for(int i=0;i<present->noofkeys;i++){
                     if(present->data[i].key==x)
+<<<<<<< HEAD
                     nonleafpos=present;
+=======
+                        nonleafpos=present;
+>>>>>>> origin/master
                     q2.enque(present->data[i].right);
                 }
 
@@ -422,12 +496,21 @@ void bplus::insert(int x,char ch[256])
         else
         {
             if(present->isleaf){
+<<<<<<< HEAD
                 myrecord=present->splitanode(myrecord);
                 present->isleaf=1;
             }
             else{
                 myrecord=present->splitaparent(myrecord);
                 present->isleaf=0;
+=======
+            myrecord=present->splitanode(myrecord);
+            present->isleaf=1;
+            }
+            else{
+            myrecord=present->splitaparent(myrecord);
+            present->isleaf=0;
+>>>>>>> origin/master
             }
 
             while(1)
@@ -451,10 +534,17 @@ void bplus::insert(int x,char ch[256])
                 }
                 else
                 {
+<<<<<<< HEAD
                     present=present->father;
 
                     if(present->data[0].left!=NULL)
                     present->isleaf=0;
+=======
+                   present=present->father;
+
+                    if(present->data[0].left!=NULL)
+                      present->isleaf=0;
+>>>>>>> origin/master
 
                     if(present->noofkeys < mkeys)
                     {
@@ -464,12 +554,21 @@ void bplus::insert(int x,char ch[256])
                     else
                     {
                         if(present->isleaf){
+<<<<<<< HEAD
                             myrecord=present->splitanode(myrecord);
                             present->isleaf=1;
                         }
                         else{
                             myrecord=present->splitaparent(myrecord);
                             present->isleaf=0;
+=======
+                        myrecord=present->splitanode(myrecord);
+                        present->isleaf=1;
+                        }
+                        else{
+                           myrecord=present->splitaparent(myrecord);
+                           present->isleaf=0;
+>>>>>>> origin/master
                         }
 
                     }
@@ -481,6 +580,7 @@ void bplus::insert(int x,char ch[256])
     }
 }
 
+<<<<<<< HEAD
 /*
 
 void bplus::Delete(int x)
@@ -500,6 +600,27 @@ delete(present->data[i].left);
 delete(present->data[i].right);
 present->data[i].key=NULL;
 delete(present->data[i]);
+=======
+
+
+void bplus::Delete(int x)
+{
+ int i;
+ node *present;
+
+ search(x,3);
+
+present=pos;
+    cout<<present->data[0].key;
+
+/*case 1: Removing the key from the leaf*/
+for(i=0;i<present->noofkeys;i++){
+    if(present->data[i].key==x){
+        delete(present->data[i].left);
+        delete(present->data[i].right);
+        present->data[i].key=NULL;
+//        delete(present->data[i]);
+>>>>>>> origin/master
 
 
 }
@@ -507,7 +628,11 @@ delete(present->data[i]);
 
 
 
+<<<<<<< HEAD
 }*/
+=======
+}
+>>>>>>> origin/master
 
 
 int main(int argc, char **argv)
@@ -549,8 +674,13 @@ int main(int argc, char **argv)
     do {
         cin.clear();
         cin.ignore();
+<<<<<<< HEAD
         cout<<endl<<"Run Time Options: "<<endl;
         cout<<"1)Insert\n2)Search\n3)Delete\n4)Print\n5)Quit";
+=======
+        //cout<<endl<<"Run Time Options: "<<endl;
+        //cout<<"1)Insert\n2)Search\n3)Delete\n4)Print\n5)Quit";
+>>>>>>> origin/master
         cout<<"\nEnter your choice : ";
         cin>>op;
         if(cin.fail()){
@@ -580,6 +710,7 @@ int main(int argc, char **argv)
             }
             if(!b.search(x,2))
             cout<<" Students Record number not found!";
+<<<<<<< HEAD
             break;
             case 3: cout<<"\nEnter a data : ";
             cin>>x;
@@ -594,6 +725,22 @@ int main(int argc, char **argv)
             else
             cout<<"Students Record number not found!";
             break;
+=======
+            break;
+            case 3: cout<<"\nEnter a data : ";
+				    cin>>x;
+				    if(cin.fail()){
+                    cout<<"Invalid Input"<<endl;
+                    continue;
+				    }
+				    if(b.checkindex(x,3)){
+				      b.Delete(x);
+				      //b.displaytree();
+				    }
+				    else
+					  cout<<"Students Record number not found!";
+                      break;
+>>>>>>> origin/master
 
             case 4: b.displaytree();
             b.displaytreeval();
