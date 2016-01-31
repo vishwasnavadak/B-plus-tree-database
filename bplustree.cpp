@@ -6,7 +6,7 @@ Supported Operations:
 3. Deletion of records.
 4. Display all records present in the database.
 */
-#define MAX 20
+#define MAX 100
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
@@ -19,290 +19,246 @@ node *pos,*nonleafpos;
 /* Record Class will define variables to store roll number and name of each of the student. */
 struct record
 {
-    node *left;
-    node *right;
-    int key;
-    char name[256];
+  node *left;
+  node *right;
+  int key;
+  char name[256];
 };
 /* Node class will define each node, which has pointers to other nodes and records based on size specified. */
 class node
 {
 public:
-    int noofkeys;
-    record data[MAX];
-    node *father;
-    node *first;
-    node *next;
-    int isleaf;
+  int noofkeys;
+  record data[MAX];
+  node *father;
+  node *first;
+  node *next;
+  int isleaf;
 
-    node();
-    /* insertinanode() will take a record as parameter and inserts it into the node */
-    void insertinanode(record x);
-    /* splitanode() is used to split nodes when it has no space left to insert more records */
-    record splitanode(record x);
-    /* splitaparent() is used to split parent nodes and link child nodes accordingly*/
-    record splitaparent(record x);
+  node();
+  /* insertinanode() will take a record as parameter and inserts it into the node */
+  void insertinanode(record x);
+  /* splitanode() is used to split nodes when it has no space left to insert more records */
+  record splitanode(record x);
+  /* splitaparent() is used to split parent nodes and link child nodes accordingly*/
+  record splitaparent(record x);
 
-    node *nextindex(int x);
-    void display();
-    void displayval();
+  node *nextindex(int x);
+  void display();
+  void displayval();
 };
 
 node::node()
 {
-<<<<<<< HEAD
-    int i;
-    for(i=0;i<=MAX;i++){
-        data[i].left=NULL;
-        data[i].right=NULL;
-=======
-   int i;
-    for(i=0;i<=MAX;i++){
+  int i;
+  for(i=0;i<=MAX;i++){
     data[i].left=NULL;
     data[i].right=NULL;
->>>>>>> origin/master
-    }
-    noofkeys=0;
-    father=NULL;
-    first=NULL;
-    next=NULL;
-    isleaf=1;
+  }
+  noofkeys=0;
+  father=NULL;
+  first=NULL;
+  next=NULL;
+  isleaf=1;
 }
 
 /*Queue is used to traverse through B+ tree node levels */
 class Q
 {
-    node *data[100000];
-    int R,F;
+  node *data[100000];
+  int R,F;
 public:
-    Q()
-    {
-        R=F=0;
-    }
-    int empty()
-    {
-        if(R==F)
-        return 1;
-        else
-        return 0;
-    }
-    node *deque()
-    {
-        return data[F++];
-    }
-    void  enque(node *x)
-    {
-        data[R++]=x;
-    }
-    void makeempty()
-    {
-        R=F=0;
-    }
+  Q()
+  {
+    R=F=0;
+  }
+  int empty()
+  {
+    if(R==F)
+    return 1;
+    else
+    return 0;
+  }
+  node *deque()
+  {
+    return data[F++];
+  }
+  void  enque(node *x)
+  {
+    data[R++]=x;
+  }
+  void makeempty()
+  {
+    R=F=0;
+  }
 };
-<<<<<<< HEAD
-/* Bplus class will define the whole tree structure and includes required functionalities, pointers and number of keys present in the tree. */
-class bplus
-{
-    int mkeys;
-=======
 
 class bplus
 {
-    int mkeys; //maximum number of keys in a node
->>>>>>> origin/master
-    node *root;
-    int keys[100000];
-    int totalnoofkeys;
+  int mkeys; //maximum number of keys in a node
+  node *root;
+  int keys[100000];
+  int totalnoofkeys;
 public:
-    bplus(int n)
-    {
-        mkeys=n;
-        root=NULL;
-        totalnoofkeys=0;
-    }
-<<<<<<< HEAD
-    /* Receives roll number and name from main functions and initiates insert operation.*/
-    void insert(int x,char ch[256]);
-    /* checkindex() function receives entered values from insert function and checks whether entered roll number is already exist in the database.*/
-    bool checkindex(int x,int choice);
-    /* displaytree() will display the tree structure in the way it is created.*/
-    void displaytree();
-    /* displaytreeval() will display all roll numbers and corresponding names one per each line.*/
-    void displaytreeval();
-    /* search function takes roll number and returns boolean values depending on whether it's present or not. If present its corresponding name will be displayed.*/
-    bool search(int x,int choice);
-    /* Delete() takes roll number from main function and deletes it from the B plus tree.*/
-=======
-    void insert(int x,char ch[256]);
-    bool checkindex(int x,int choice);
-    void displaytree();
-    void displaytreeval();
-    bool search(int x,int choice);
->>>>>>> origin/master
-    void Delete(int x);
+  bplus(int n)
+  {
+    mkeys=n;
+    root=NULL;
+    totalnoofkeys=0;
+  }
+  void insert(int x,char ch[256]);
+  bool checkindex(int x,int choice);
+  void displaytree();
+  void displaytreeval();
+  bool search(int x,int choice);
+  void Delete(int x);
 };
 
 void node::display()
 {
-    int i;
-    cout<<"(";
-    for(i=0;i<noofkeys;i++)
-    cout<<data[i].key<<" ";
-    cout<<")";
+  int i;
+  cout<<"(";
+  for(i=0;i<noofkeys;i++)
+  cout<<data[i].key<<" ";
+  cout<<")";
 }
 void node::displayval()
 {
-    int i;
-    for(i=0;i<noofkeys;i++)
-    cout<<data[i].key<<" -> "<<data[i].name<<endl;
+  int i;
+  for(i=0;i<noofkeys;i++)
+  cout<<data[i].key<<" -> "<<data[i].name<<endl;
 }
 
 node *node::nextindex(int x)
 {
-    int i;
-    if(this->data[0].left==NULL && this->data[0].right==NULL)
-    return(this);
-    else{
-        for(i=0;i<noofkeys ;i++)
-<<<<<<< HEAD
-        {
-            if(x <data[i].key)
-            return data[i].left;
-            else if(x==data[i].key)
-            return data[i].right;
-            else if(x>data[i].key&& x< data[i+1].key)
-            return data[i].right;
-        }
-        return data[i-1].right;
-=======
-         {
-             if(x <data[i].key)
-             return data[i].left;
-             else if(x==data[i].key)
-                return data[i].right;
-             else if(x>data[i].key&& x< data[i+1].key)
-                return data[i].right;
-         }
-         return data[i-1].right;
->>>>>>> origin/master
-
+  int i;
+  if(this->data[0].left==NULL && this->data[0].right==NULL)
+  return(this);
+  else{
+    for(i=0;i<noofkeys ;i++)
+    {
+      if(x <data[i].key)
+      return data[i].left;
+      else if(x==data[i].key)
+      return data[i].right;
+      else if(x>data[i].key&& x< data[i+1].key)
+      return data[i].right;
     }
+    return data[i-1].right;
+
+  }
 
 }
 
 
 void node::insertinanode(record x)
 {
-    int i;
-    for(i=noofkeys-1;i>=0 && data[i].key>x.key;i--)
-    data[i+1]=data[i];
-    data[i+1]=x;
-    data[i+1].left=x.left;
-    data[i+1].right=x.right;
-    noofkeys++;
+  int i;
+  for(i=noofkeys-1;i>=0 && data[i].key>x.key;i--)
+  data[i+1]=data[i];
+  data[i+1]=x;
+  data[i+1].left=x.left;
+  data[i+1].right=x.right;
+  noofkeys++;
 }
 
 record node::splitanode(record x)
 {
-    node *T;
-    record myrecord;
-    int i,j,centre;
-    centre=(noofkeys)/2;
-    T=new node;
-    if(x.key>data[centre].key)
-    {
-        for(i=centre+1,j=0;i<=noofkeys;i++,j++)
-        T->data[j]=data[i];
-        T->noofkeys=noofkeys-centre-1;
-        noofkeys=noofkeys-T->noofkeys;
-        T->insertinanode(x);
-        T->first=T;
-        T->father=father;
-        myrecord.key=T->data[0].key;
-        myrecord.right=T;
-        myrecord.left=this;
-        this->next=T;
+  node *T;
+  record myrecord;
+  int i,j,centre;
+  centre=(noofkeys)/2;
+  //cout<<"\ncentre= "<<centre;
+  T=new node;
+  if(x.key>data[centre].key)  //Divide the node in two parts(original and T)
+  {
+    for(i=centre+1,j=0;i<=noofkeys;i++,j++)
+    T->data[j]=data[i];
+    T->noofkeys=noofkeys-centre-1;
+    noofkeys=noofkeys-T->noofkeys;
+    T->insertinanode(x);
+    T->first=T;
+    T->father=father;
+    myrecord.key=T->data[0].key;
+    myrecord.right=T;
+    myrecord.left=this;
+    this->next=T;
 
-    }
-    else
-    {
-        for(i=centre,j=0;i<noofkeys;i++,j++)
-        T->data[j]=data[i];
-        T->noofkeys=noofkeys-centre;
-        noofkeys=noofkeys-T->noofkeys;
-        insertinanode(x);
-        T->father=father;
-        T->father->isleaf=0;
-        myrecord.key=T->data[0].key;
-        myrecord.right=T;
-        myrecord.left=this;
-        this->next=T;
-        T->next=NULL;
+  }
+  else
+  {
+    for(i=centre,j=0;i<noofkeys;i++,j++)
+    T->data[j]=data[i];
+    T->noofkeys=noofkeys-centre;
+    noofkeys=noofkeys-T->noofkeys;
+    insertinanode(x);
+    T->father=father;
+    T->father->isleaf=0;
+    myrecord.key=T->data[0].key;
+    myrecord.right=T;
+    myrecord.left=this;
+    this->next=T;
 
-    }
-    return(myrecord);
+  }
+  return(myrecord);
 }
 
 record node::splitaparent(record x)
 {
-    node *T;
-    record myrecord;
-    int i,j,centre;
-    centre=(noofkeys-2)/2;
-    T=new node;
-    if(x.key>data[centre].key)
+  node *T;
+  record myrecord;
+  int i,j,centre;
+  centre=(noofkeys-2)/2;
+  T=new node;
+  if(x.key>data[centre].key)  //Divide the node in two parts(original and T)
+  {
+
+    for(i=centre+1,j=0;i<=noofkeys;i++,j++)
+    T->data[j]=data[i];
+    T->noofkeys=noofkeys-centre-1;
+    noofkeys=noofkeys-T->noofkeys;
+    T->insertinanode(x);
+    T->first=T;
+    T->father=father;
+    myrecord.key=T->data[0].key;
+    myrecord.right=T;
+    myrecord.left=this;
+    this->isleaf=0;
+    T->isleaf=0;
+    //Delete the first key from node T
+    for(i=1;i<T->noofkeys;i++)
+    T->data[i-1]=T->data[i];
+    T->noofkeys--;
+
+    // setting the father
+    for(i=0;i<T->noofkeys;i++)
     {
-
-        for(i=centre+1,j=0;i<=noofkeys;i++,j++)
-        T->data[j]=data[i];
-        T->noofkeys=noofkeys-centre-1;
-        noofkeys=noofkeys-T->noofkeys;
-        T->insertinanode(x);
-        T->first=T;
-        T->father=father;
-        myrecord.key=T->data[0].key;
-        myrecord.right=T;
-        myrecord.left=this;
-        this->isleaf=0;
-        T->isleaf=0;
-        //Delete the first key from node T
-        for(i=1;i<T->noofkeys;i++)
-        T->data[i-1]=T->data[i];
-        T->noofkeys--;
-
-        // setting the father
-        for(i=0;i<T->noofkeys;i++)
-        {
-            T->data[i].right->father=T;
-        }
+      T->data[i].right->father=T;
     }
-    else
+  }
+  else
+  {
+    for(i=centre,j=0;i<noofkeys;i++,j++)
+    T->data[j]=data[i];
+    T->noofkeys=noofkeys-centre;
+    noofkeys=noofkeys-T->noofkeys;
+    insertinanode(x);
+    T->father=father;
+    myrecord.key=T->data[0].key;
+    myrecord.right=T;
+    myrecord.left=this;
+    //   Delete the first key from node T
+    for(i=1;i<T->noofkeys;i++)
+    T->data[i-1]=T->data[i];
+    T->noofkeys--;
+
+    // setting the father
+    for(i=0;i<T->noofkeys;i++)
     {
-        for(i=centre,j=0;i<noofkeys;i++,j++)
-        T->data[j]=data[i];
-        T->noofkeys=noofkeys-centre;
-        noofkeys=noofkeys-T->noofkeys;
-        insertinanode(x);
-        T->father=father;
-        myrecord.key=T->data[0].key;
-        myrecord.right=T;
-        myrecord.left=this;
-        //   Delete the first key from node T
-        for(i=1;i<T->noofkeys;i++)
-        T->data[i-1]=T->data[i];
-        T->noofkeys--;
-
-<<<<<<< HEAD
-        // setting the father
-=======
-         // setting the father
->>>>>>> origin/master
-        for(i=0;i<T->noofkeys;i++)
-        {
-            T->data[i].right->father=T;
-        }
+      T->data[i].right->father=T;
     }
-    return(myrecord);
+  }
+  return(myrecord);
 }
 
 
@@ -310,443 +266,375 @@ record node::splitaparent(record x)
 
 bool bplus::checkindex(int x,int choice)
 {
-<<<<<<< HEAD
-    if(choice==3){
-        for(int i=0;i<totalnoofkeys;i++)
-        {
-            if(keys[i]==x)
-            return true;
-        }
-    }
-    if(choice==1){
-        for(int i=0;i<totalnoofkeys;i++)
-        {
-            if(keys[i]==x)
-            return true;
-        }
-        keys[totalnoofkeys]=x;
-        totalnoofkeys=totalnoofkeys+1;
-    }
-=======
-if(choice==3){
+  if(choice==3){
     for(int i=0;i<totalnoofkeys;i++)
     {
-        if(keys[i]==x)
-        return true;
+      if(keys[i]==x)
+      return true;
     }
-}
-   if(choice==1){
+  }
+  if(choice==1){
     for(int i=0;i<totalnoofkeys;i++)
     {
-        if(keys[i]==x)
-        return true;
+      if(keys[i]==x)
+      return true;
     }
     keys[totalnoofkeys]=x;
-   totalnoofkeys=totalnoofkeys+1;
-   }
->>>>>>> origin/master
+    totalnoofkeys=totalnoofkeys+1;
+  }
 
-    return false;
+  return false;
 }
 
+
+/*bool bplus::search(int x,int choice)
+{
+  Q q1,q2;
+  node *present;
+  int i;
+  q1.enque(root);
+  while(!q1.empty())
+  {
+    q2.makeempty();
+    cout<<"\n";
+    while(!q1.empty())
+    {
+
+      present=q1.deque();
+      if(present->isleaf){
+
+        for(i=0;i<present->noofkeys;i++){
+          if(present->data[i].key==x )
+          {
+            if(choice!=3){
+              cout<<"\n Student Details: ";
+              cout<<"\n Roll number: "<<present->data[i].key<<"\n Name: "<<present->data[i].name<<endl;
+            }
+            pos=present;
+            return true ;
+          }
+        }
+
+      }
+      if(!present->isleaf)
+      {
+        q2.enque(present->data[0].left);
+        for(int i=0;i<present->noofkeys;i++){
+          if(present->data[i].key==x)
+          nonleafpos=present;
+          q2.enque(present->data[i].right);
+        }
+
+      }
+    }
+    q1=q2;
+  }
+  return false;
+}*/
 
 bool bplus::search(int x,int choice)
 {
-    Q q1,q2;
     node *present;
-    int i;
-    q1.enque(root);
-    while(!q1.empty())
+    present=root;
+    while(!present->isleaf)
     {
-        q2.makeempty();
-        cout<<"\n";
-        while(!q1.empty())
-        {
-
-            present=q1.deque();
-            if(present->isleaf){
-
-                for(i=0;i<present->noofkeys;i++){
-<<<<<<< HEAD
-                    if(present->data[i].key==x )
-                    {
-                        if(choice!=3){
+        present=present->data[0].left;
+    }
+    while(present->next!=NULL){
+        for(int i=0;i<present->noofkeys;i++){
+                if(present->data[i].key==x){
+                        if(choice==2){
                             cout<<"\n Student Details: ";
                             cout<<"\n Roll number: "<<present->data[i].key<<"\n Name: "<<present->data[i].name<<endl;
                         }
                         pos=present;
-                        return true ;
-                    }
+                  return true;
                 }
-=======
-                if(present->data[i].key==x )
-                {
-                    if(choice!=3){
-                    cout<<"\n Student Details: ";
-                    cout<<"\n Roll number: "<<present->data[i].key<<"\n Name: "<<present->data[i].name<<endl;
-                    }
-                    pos=present;
-                    return true ;
-                }
-                }
->>>>>>> origin/master
-
-            }
-            if(!present->isleaf)
-            {
-                q2.enque(present->data[0].left);
-                for(int i=0;i<present->noofkeys;i++){
-                    if(present->data[i].key==x)
-<<<<<<< HEAD
-                    nonleafpos=present;
-=======
-                        nonleafpos=present;
->>>>>>> origin/master
-                    q2.enque(present->data[i].right);
-                }
-
-            }
         }
-        q1=q2;
+        present=present->next;
     }
     return false;
 }
 
 void bplus::displaytree()
 {
-    Q q1,q2;
-    node *present;
-    q1.enque(root);
+  Q q1,q2;
+  node *present;
+  q1.enque(root);
+  while(!q1.empty())
+  {
+    q2.makeempty();
+    cout<<"\n";
     while(!q1.empty())
     {
-        q2.makeempty();
-        cout<<"\n";
-        while(!q1.empty())
-        {
-            present=q1.deque();
-            present->display();cout<<"  ";
-            if(!present->isleaf)
-            {
-                q2.enque(present->data[0].left);
-                for(int i=0;i<present->noofkeys;i++)
-                q2.enque(present->data[i].right);
+      present=q1.deque();
+      present->display();cout<<"  ";
+      if(!present->isleaf)
+      {
+        q2.enque(present->data[0].left);
+        for(int i=0;i<present->noofkeys;i++)
+        q2.enque(present->data[i].right);
 
-            }
-        }
-        q1=q2;
+      }
     }
+    q1=q2;
+  }
 }
 
 
 void bplus::displaytreeval()
 {
-    Q q1,q2;
-    node *present;
-    cout<<endl<<endl<<"The list of Student roll number and corresponding names are as follows"<<endl;
-    q1.enque(root);
+  Q q1,q2;
+  node *present;
+  cout<<endl<<endl<<"The list of Student roll number and corresponding names are as follows"<<endl;
+  q1.enque(root);
+  while(!q1.empty())
+  {
+    q2.makeempty();
+    cout<<"\n";
     while(!q1.empty())
     {
-        q2.makeempty();
-        cout<<"\n";
-        while(!q1.empty())
-        {
 
-            present=q1.deque();
-            if(present->isleaf){
-                present->displayval();
-            }
-            if(!present->isleaf)
-            {
-                q2.enque(present->data[0].left);
-                for(int i=0;i<present->noofkeys;i++)
-                q2.enque(present->data[i].right);
+      present=q1.deque();
+      if(present->isleaf){
+        present->displayval();
+      }
+      if(!present->isleaf)
+      {
+        q2.enque(present->data[0].left);
+        for(int i=0;i<present->noofkeys;i++)
+        q2.enque(present->data[i].right);
 
-            }
-        }
-        q1=q2;
+      }
     }
+    q1=q2;
+  }
 }
+
+/*void bplus::displaytreeval()
+{
+    node *present;
+    present =root;
+    while(!present->isleaf)
+    {
+        present=present->data[0].left;
+    }
+    while(present->next!=NULL){
+        for(int i=0;i<present->noofkeys;i++){
+            cout<<present->data[i].key<<" -> "<<present->data[i].name<<endl;;
+        }
+        present=present->next;
+    }
+}*/
 
 void bplus::insert(int x,char ch[256])
 {
-    record myrecord;
-    node *present,*q;
-    if(checkindex(x,1))
-    {
-        cout<<"Duplicate key entered!Please reenter the students roll number and name\n";
-        return;
-    }
-    myrecord.key=x;
-    strcpy(myrecord.name,ch);
-    myrecord.left=NULL;
-    myrecord.right=NULL;
-    if(root==NULL)
-    {
-        root = new node;
-        root->insertinanode(myrecord);
-    }
+  record myrecord;
+  node *present,*q;
+  if(checkindex(x,1))
+  {
+    cout<<"Duplicate key entered!Please reenter the students roll number and name\n";
+    return;
+  }
+  myrecord.key=x;
+  strcpy(myrecord.name,ch);
+  myrecord.left=NULL;
+  myrecord.right=NULL;
+  if(root==NULL)
+  {
+    root = new node;
+    root->insertinanode(myrecord);
+  }
+  else
+  {
+    present=root;
+    while(!(present->isleaf))
+    present=present->nextindex(x);
+    if(present->noofkeys<mkeys)
+    present->insertinanode(myrecord);
+
     else
     {
-        present=root;
-        while(!(present->isleaf))
-        present=present->nextindex(x);
-        if(present->noofkeys<mkeys)
-        present->insertinanode(myrecord);
+      if(present->isleaf){
+        myrecord=present->splitanode(myrecord);
+        present->isleaf=1;
+      }
+      else{
+        myrecord=present->splitaparent(myrecord);
+        present->isleaf=0;
+      }
 
+      while(1)
+      {
+        if(present==root)
+        {
+          q=new node;
+          q->data[0]=myrecord;
+          q->first=root;
+          q->father=NULL;
+          q->data[0].left=myrecord.left;
+          q->data[0].right=myrecord.right;
+          q->noofkeys=1;
+          root=q;
+          root->isleaf=0;
+          q->first->father=q;
+          q->data[0].right->father=q;
+          q->data[0].left->father=q;
+          return;
+
+        }
         else
         {
+          present=present->father;
+
+          if(present->data[0].left!=NULL)
+          present->isleaf=0;
+
+          if(present->noofkeys < mkeys)
+          {
+            present->insertinanode(myrecord);
+            return;
+          }
+          else
+          {
             if(present->isleaf){
-<<<<<<< HEAD
-                myrecord=present->splitanode(myrecord);
-                present->isleaf=1;
+              myrecord=present->splitanode(myrecord);
+              present->isleaf=1;
             }
             else{
-                myrecord=present->splitaparent(myrecord);
-                present->isleaf=0;
-=======
-            myrecord=present->splitanode(myrecord);
-            present->isleaf=1;
-            }
-            else{
-            myrecord=present->splitaparent(myrecord);
-            present->isleaf=0;
->>>>>>> origin/master
+              myrecord=present->splitaparent(myrecord);
+              present->isleaf=0;
             }
 
-            while(1)
-            {
-                if(present==root)
-                {
-                    q=new node;
-                    q->data[0]=myrecord;
-                    q->first=root;
-                    q->father=NULL;
-                    q->data[0].left=myrecord.left;
-                    q->data[0].right=myrecord.right;
-                    q->noofkeys=1;
-                    root=q;
-                    root->isleaf=0;
-                    q->first->father=q;
-                    q->data[0].right->father=q;
-                    q->data[0].left->father=q;
-                    return;
-
-                }
-                else
-                {
-<<<<<<< HEAD
-                    present=present->father;
-
-                    if(present->data[0].left!=NULL)
-                    present->isleaf=0;
-=======
-                   present=present->father;
-
-                    if(present->data[0].left!=NULL)
-                      present->isleaf=0;
->>>>>>> origin/master
-
-                    if(present->noofkeys < mkeys)
-                    {
-                        present->insertinanode(myrecord);
-                        return;
-                    }
-                    else
-                    {
-                        if(present->isleaf){
-<<<<<<< HEAD
-                            myrecord=present->splitanode(myrecord);
-                            present->isleaf=1;
-                        }
-                        else{
-                            myrecord=present->splitaparent(myrecord);
-                            present->isleaf=0;
-=======
-                        myrecord=present->splitanode(myrecord);
-                        present->isleaf=1;
-                        }
-                        else{
-                           myrecord=present->splitaparent(myrecord);
-                           present->isleaf=0;
->>>>>>> origin/master
-                        }
-
-                    }
-                }
-
-            }
+          }
         }
 
+      }
     }
+
+  }
 }
 
-<<<<<<< HEAD
-/*
-
-void bplus::Delete(int x)
-{
-int i;
-node *present;
-
-search(x,3);
-
-present=pos;
-cout<<present->data[0].key;
-
-case 1: Removing the key from the leaf
-for(i=0;i<present->noofkeys;i++){
-if(present->data[i].key==x){
-delete(present->data[i].left);
-delete(present->data[i].right);
-present->data[i].key=NULL;
-delete(present->data[i]);
-=======
 
 
 void bplus::Delete(int x)
 {
- int i;
- node *present;
+  int i;
+  node *present;
 
- search(x,3);
+  search(x,3);
 
-present=pos;
-    cout<<present->data[0].key;
+  present=pos;
+  cout<<present->data[0].key;
 
-/*case 1: Removing the key from the leaf*/
-for(i=0;i<present->noofkeys;i++){
+  /*case 1: Removing the key from the leaf*/
+  for(i=0;i<present->noofkeys;i++){
     if(present->data[i].key==x){
-        delete(present->data[i].left);
-        delete(present->data[i].right);
-        present->data[i].key=NULL;
-//        delete(present->data[i]);
->>>>>>> origin/master
+     delete[] present->data[i];
+      //present->data[i].key=NULL;
+      //        delete(present->data[i]);
+
+
+    }
+  }
+
 
 
 }
-}
-
-
-
-<<<<<<< HEAD
-}*/
-=======
-}
->>>>>>> origin/master
 
 
 int main(int argc, char **argv)
 {
-    int n,x,op;
-    char ch[256];
-    ifstream input;
-    cout<<"Enter number of values per node: "<<endl;
-    cin>>n;
-    if(cin.fail()){
-        cout<<"Invalid Input"<<endl;
-        return 0;
-    }
-    bplus b(n);
-    if(argc>1){
-        if(strcmp(argv[1],"-i")==0 && argc==4){
-            x=atoi(argv[2]);
-            b.insert(x,argv[3]);
-            cout<<"Inserted successfully ";
-        }
-        else if(strcmp(argv[1],"-if")==0 && argc==3){
-            input.open(argv[2]);
-            while(input>>x>>ch){
-                b.insert(x,ch);
-            }
-            cout<<"Input from file is successfully inserted into database";
-        }
-        else if(strcmp(argv[1],"-h")==0){
-            cout<<"Command Line Options"<<endl;
-            cout<<"-i <roll_number> <name> : for inserting one record through command line"<<endl;
-            cout<<"-if <filename>.txt      : for inserting records from the data present in file"<<endl;
-            cout<<"-h                      : for displaying this help text"<<endl;
-        }
-        else{
-            cout<<"Invalid Option, use bplus -h for listing all options";
-        }
-    }
-
-    do {
-        cin.clear();
-        cin.ignore();
-<<<<<<< HEAD
-        cout<<endl<<"Run Time Options: "<<endl;
-        cout<<"1)Insert\n2)Search\n3)Delete\n4)Print\n5)Quit";
-=======
-        //cout<<endl<<"Run Time Options: "<<endl;
-        //cout<<"1)Insert\n2)Search\n3)Delete\n4)Print\n5)Quit";
->>>>>>> origin/master
-        cout<<"\nEnter your choice : ";
-        cin>>op;
-        if(cin.fail()){
-            cout<<"Invalid Input"<<endl;
-            continue;
-        }
-
-        switch(op)
-        {
-            case 1: cout<<"\nEnter Roll Number: ";
-            cin >> x;
-            if(cin.fail()){
-                cout<<"Invalid Input"<<endl;
-                continue;
-            }
-            cout<<"enter the name: ";
-            cin>>ch;
-            b.insert(x,ch);
-            cout<<"\nTree after insertion : ";
-            b.displaytree();
-            break;
-            case 2: cout<<"\nEnter Roll Number : ";
-            cin>>x;
-            if(cin.fail()){
-                cout<<"Invalid Input"<<endl;
-                continue;
-            }
-            if(!b.search(x,2))
-            cout<<" Students Record number not found!";
-<<<<<<< HEAD
-            break;
-            case 3: cout<<"\nEnter a data : ";
-            cin>>x;
-            if(cin.fail()){
-                cout<<"Invalid Input"<<endl;
-                continue;
-            }
-            if(b.checkindex(x,3)){
-                b.Delete(x);
-                b.displaytree();
-            }
-            else
-            cout<<"Students Record number not found!";
-            break;
-=======
-            break;
-            case 3: cout<<"\nEnter a data : ";
-				    cin>>x;
-				    if(cin.fail()){
-                    cout<<"Invalid Input"<<endl;
-                    continue;
-				    }
-				    if(b.checkindex(x,3)){
-				      b.Delete(x);
-				      //b.displaytree();
-				    }
-				    else
-					  cout<<"Students Record number not found!";
-                      break;
->>>>>>> origin/master
-
-            case 4: b.displaytree();
-            b.displaytreeval();
-            break;
-        }
-
-    }while(op!=5);
+  int n,x,op;
+  char ch[256];
+  ifstream input;
+  cout<<"Enter number of values per node: "<<endl;
+  cin>>n;
+  if(cin.fail()){
+    cout<<"Invalid Input"<<endl;
     return 0;
+  }
+  bplus b(n);
+  if(argc>1){
+    if(strcmp(argv[1],"-i")==0 && argc==4){
+      x=atoi(argv[2]);
+      b.insert(x,argv[3]);
+      cout<<"Inserted successfully ";
+    }
+    else if(strcmp(argv[1],"-if")==0 && argc==3){
+      input.open(argv[2]);
+      while(input>>x>>ch){
+        b.insert(x,ch);
+      }
+      cout<<"Input from file is successfully inserted into database";
+    }
+    else if(strcmp(argv[1],"-h")==0){
+      cout<<"Command Line Options"<<endl;
+      cout<<"-i <roll_number> <name> : for inserting one record through command line"<<endl;
+      cout<<"-if <filename>.txt      : for inserting records from the data present in file"<<endl;
+      cout<<"-h                      : for displaying this help text"<<endl;
+    }
+    else{
+      cout<<"Invalid Option, use bplus -h for listing all options";
+    }
+  }
+
+  do {
+    cin.clear();
+    cin.ignore();
+    //cout<<endl<<"Run Time Options: "<<endl;
+    //cout<<"1)Insert\n2)Search\n3)Delete\n4)Print\n5)Quit";
+    cout<<"\nEnter your choice : ";
+    cin>>op;
+    if(cin.fail()){
+      cout<<"Invalid Input"<<endl;
+      continue;
+    }
+
+    switch(op)
+    {
+      case 1: cout<<"\nEnter Roll Number: ";
+      cin >> x;
+      if(cin.fail()){
+        cout<<"Invalid Input"<<endl;
+        continue;
+      }
+      cout<<"enter the name: ";
+      cin>>ch;
+      b.insert(x,ch);
+      cout<<"\nTree after insertion : ";
+      b.displaytree();
+      break;
+      case 2: cout<<"\nEnter Roll Number : ";
+      cin>>x;
+      if(cin.fail()){
+        cout<<"Invalid Input"<<endl;
+        continue;
+      }
+      if(!b.search(x,2))
+      cout<<" Students Record number not found!";
+      break;
+      case 3: ;
+      cout<<"\nEnter a data : ";
+      cin>>x;
+      if(cin.fail()){
+        cout<<"Invalid Input"<<endl;
+        continue;
+      }
+      if(b.checkindex(x,3)){
+        b.Delete(x);
+        //b.displaytree();
+      }
+      else
+      cout<<"Students Record number not found!";
+      break;
+
+      case 4: b.displaytree();
+      //cout<<endl<<endl<<"The student register number and corresponding names are as follows"<<endl;
+      b.displaytreeval();
+      break;
+    }
+
+  }while(op!=5);
+  return 0;
 }
